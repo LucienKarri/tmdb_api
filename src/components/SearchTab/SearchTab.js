@@ -23,6 +23,10 @@ export default class SearchTab extends Component {
         const {request, page} = this.state;
 
         if (prevState.request !== request || prevState.page !== page) {
+            this.setState({
+                loading: true,
+                error: null
+            })
             this.getMovies();
         }
     }

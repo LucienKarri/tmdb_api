@@ -18,6 +18,39 @@ export default class TabsView extends Component {
         this.getRatedMovies();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.page !== this.state.page) {
+            this.setState({
+                loading:true,
+                error: null
+            });
+            this.getRatedMovies();
+        }
+    }
+/*
+    getRatedMovies = () => {
+        this.tmdbService
+            .getRatedMovies(this.state.page)
+            .then((ratedMovies) => {
+                if (ratedMovies.total_results === 0) {
+                    this.setState({
+                        error: <Alert type="info" message="You haven't rated any movies yet" />
+                    })
+                }
+                this.setState({
+                    ratedMovies,
+                    loading: false
+                })
+            })
+            .catch((error) => {
+                this.setState({
+                    error: <Alert type="error" message={error.name} description={`${error.message}. The service may not be available in your country.`} />,
+                    loading: false
+                })
+            })
+    }
+*/
+
     getRatedMovies = () => {
         this.tmdbService
             .getRatedMovies(1)
@@ -29,7 +62,8 @@ export default class TabsView extends Component {
                 }
                 if (res.total_pages === 1) {
                     this.setState({
-                        ratedMovies: res
+                        ratedMovies: res,
+                        loading: false
                     })
                 } else {
                     this.getAllRatedMovies(res);
@@ -75,8 +109,8 @@ export default class TabsView extends Component {
     }
 
     render() {
-        const {page, ratedMovies, error, loading} = this.state;
-
+        const {ratedMovies, error, loading, page} = this.state;
+        
         const hasData = !(loading || error);
         const spinner = loading ? <Spin /> : null;
         const content = hasData ? <MovieList movies={ratedMovies[page - 1]} onChangePage={this.onChangePage} /> : null;
