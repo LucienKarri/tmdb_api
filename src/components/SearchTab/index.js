@@ -1,3 +1,3 @@
-import SearchTab from "./SearchTab";
+import SearchTab from './SearchTab';
 
 export default SearchTab;

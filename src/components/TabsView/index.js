@@ -1,3 +1,3 @@
-import TabsView from "./TabsView";
+import TabsView from './TabsView';
 
 export default TabsView;
