@@ -1,8 +1,9 @@
-import { Alert, Input, Spin } from "antd";
+import { Alert, Input } from "antd";
 import React, { Component } from "react";
 import TMDBservice from "../../services/TMDBservice";
 import debounce from "lodash.debounce";
 import MovieList from "../MovieList/MovieList";
+import Spinner from "../Spinner/Spinner";
 
 export default class SearchTab extends Component {
     tmdbService = new TMDBservice();
@@ -78,7 +79,7 @@ export default class SearchTab extends Component {
         const {movieList, error, loading} = this.state;
 
         const hasData = !(loading || error);
-        const spinner = loading ? <Spin /> : null;
+        const spinner = loading ? <Spinner /> : null;
         const content = hasData ? <MovieList movies={movieList} onChangePage={this.onChangePage} /> : null;
 
         return (

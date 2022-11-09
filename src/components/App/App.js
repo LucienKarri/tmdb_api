@@ -1,10 +1,11 @@
-import { Alert, Layout, Spin} from "antd";
+import { Alert, Layout} from "antd";
 import { Content } from "antd/lib/layout/layout";
 import React, { Component } from "react";
 import { Online, Offline } from "react-detect-offline";
 
 import TMDBservice from "../../services/TMDBservice";
 import MyContext from "../Contexts/MyContext";
+import Spinner from "../Spinner/Spinner";
 import TabsView from "../TabsView/TabsView";
 import './App.css';
 
@@ -64,7 +65,7 @@ export default class App extends Component {
         const {genres, error, loading} = this.state;
 
         const hasData = !(loading || error);
-        const spinner = loading ? <Spin /> : null;
+        const spinner = loading ? <Spinner /> : null;
         const content = hasData ? <TabsView /> : null;
 
         return (

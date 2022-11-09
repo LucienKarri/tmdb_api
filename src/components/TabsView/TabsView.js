@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import TMDBservice from "../../services/TMDBservice";
-import { Alert, Tabs, Spin } from "antd";
+import { Alert, Tabs } from "antd";
 import SearchTab from "../SearchTab/SearchTab";
 import MovieList from "../MovieList/MovieList";
 import RatingContext from "../Contexts/RatingContext";
+import Spinner from "../Spinner/Spinner";
 
 export default class TabsView extends Component {
     tmdbService = new TMDBservice();
@@ -109,7 +110,7 @@ export default class TabsView extends Component {
         const {ratedMovies, error, loading, ratingList} = this.state;
 
         const hasData = !(loading || error);
-        const spinner = loading ? <Spin /> : null;
+        const spinner = loading ? <Spinner /> : null;
         const content = hasData ? <MovieList movies={ratedMovies} onChangePage={this.onChangePage} /> : null;
 
         const items = [
