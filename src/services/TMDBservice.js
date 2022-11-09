@@ -30,7 +30,7 @@ class TMDBservice {
     }
 
     async getRatedMovies(page) {
-        const session_id = JSON.parse(localStorage.getItem('guest_session_id'));const url = `${this.baseURL}/guest_session/${session_id}/rated/movies?api_key=${this.token}&page=${page}`;
+        const session_id = JSON.parse(localStorage.getItem('guest_session_id'));const url = `${this.baseURL}/guest_session/${session_id}/rated/movies?api_key=${this.token}&page=${page}&sort_by=created_at.desc`;
 
         return await this.fetchURL(url);
     }

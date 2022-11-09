@@ -8,16 +8,17 @@ export default class TabsView extends Component {
     tmdbService = new TMDBservice();
     
     state = {
-        page: 1,
         ratedMovies: null,
         error: null,
-        loading: true
+        loading: true,
+        ratingList: {}
     }
 
     componentDidMount() {
         this.getRatedMovies();
     }
 
+/*
     componentDidUpdate(prevProps, prevState) {
         if (prevState.page !== this.state.page) {
             this.setState({
@@ -27,7 +28,7 @@ export default class TabsView extends Component {
             this.getRatedMovies();
         }
     }
-/*
+
     getRatedMovies = () => {
         this.tmdbService
             .getRatedMovies(this.state.page)
@@ -61,6 +62,7 @@ export default class TabsView extends Component {
                     })
                 }
                 if (res.total_pages === 1) {
+                    this.getRatingList(res);
                     this.setState({
                         ratedMovies: res,
                         loading: false
@@ -79,7 +81,7 @@ export default class TabsView extends Component {
 
     getAllRatedMovies = (res) => {
         const promises = [];
-        const ratedMovies = [res];
+        const ratedMovies = res;
 
         for (let i = 2; i <= res.total_pages; i++) {
             promises.push(this.tmdbService.getRatedMovies(i));
@@ -87,8 +89,9 @@ export default class TabsView extends Component {
         Promise.all(promises)
             .then((response) => {
                 response.forEach((elem) => {
-                    ratedMovies.push(elem)
+                    ratedMovies.results.push(...elem.results)
                 })
+                this.getRatingList(ratedMovies);
                 this.setState({
                     ratedMovies,
                     loading: false
@@ -102,24 +105,44 @@ export default class TabsView extends Component {
             })
     }
 
+    getRatingList = (ratedMovies) => {
+        const res = ratedMovies.results.reduce((total, elem) => {
+            total[elem.id] = elem.rating;
+            return total;
+        }, {})
+        this.setState({
+            ratingList: res
+        });
+    }
+    
     onChangePage = (page) => {
         this.setState({
-            page
+            ratedMovies: {...this.state.ratedMovies, page}
+        })
+    }
+
+    onChangeRating = (movie, value) => {
+        if (!this.state.ratingList[movie.id]) {
+            this.state.ratedMovies.results.unshift(movie)
+            console.log('new element', this.state.ratedMovies.results)
+        }
+        this.setState({
+            ratingList: {...this.state.ratingList, [movie.id]: value}
         })
     }
 
     render() {
-        const {ratedMovies, error, loading, page} = this.state;
-        
+        const {ratedMovies, error, loading, ratingList} = this.state;
+
         const hasData = !(loading || error);
         const spinner = loading ? <Spin /> : null;
-        const content = hasData ? <MovieList movies={ratedMovies[page - 1]} onChangePage={this.onChangePage} /> : null;
+        const content = hasData ? <MovieList movies={ratedMovies} onChangePage={this.onChangePage} list={ratingList} changeRating={this.onChangeRating}/> : null;
 
         const items = [
             {
                 label: 'Search',
                 key: '1',
-                children: <SearchTab />
+                children: <SearchTab list={ratingList} changeRating={this.onChangeRating} />
             },
             {
                 label: 'Rated',
