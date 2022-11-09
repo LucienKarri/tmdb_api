@@ -23,7 +23,6 @@ export default class MovieCard extends Component {
         if (this.props.movie.poster_path) {
             this.getPoster(this.props.movie.poster_path)
         } else {
-            console.log(this.props.movie)
             this.setState({
                 poster: noPoster,
                 loading: false
@@ -41,7 +40,6 @@ export default class MovieCard extends Component {
                 })
             })
             .catch((error) => {
-                console.log(error)
                 this.setState({
                     poster: noPoster,
                     loading: false
@@ -72,7 +70,11 @@ export default class MovieCard extends Component {
             overview,
             id
         } = movie;
-        const content = loading ? <div className="card__image"><Spinner /></div> : <Image src={poster} preview={false} rootClassName="card__image" alt={title} />
+
+        const date = release_date ? format(new Date(release_date), 'LLLL d, y') : 'release date unknown';
+        const spinner = <div className="card__image"><Spinner /></div>;
+        const moviePoster = <Image src={poster} preview={false} rootClassName="card__image" alt={title} />;
+        const content = loading ? spinner : moviePoster;
 
         return (
             <Card className="card">
@@ -86,7 +88,7 @@ export default class MovieCard extends Component {
                     className="card__progress"
                 />
                 <Text className="card__date">
-                    {format(new Date(release_date), 'LLLL d, y')}
+                    {date}
                 </Text>
                 <List
                     className="card__genres"
@@ -95,7 +97,7 @@ export default class MovieCard extends Component {
                     renderItem={(item) => (
                         <MyContext.Consumer>
                             {(genres) => (
-                                <List.Item>
+                                <List.Item key={item}>
                                     <Tag>{genres[item]}</Tag>
                                 </List.Item>
                             )}

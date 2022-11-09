@@ -17,7 +17,21 @@ export default class TabsView extends Component {
     }
 
     componentDidMount() {
-        this.getRatedMovies();
+        if (!JSON.parse(localStorage.getItem('guest_session_id'))) {
+            this.tmdbService
+                .newGuestSession()
+                .then((id) => {
+                    localStorage.setItem('guest_session_id', JSON.stringify(id));
+                    this.getRatedMovies();
+                })
+                .catch((error) => {
+                    this.setState({
+                        isError: <Alert type="error" message={error.name} description={error.message} />
+                    })
+                });
+        } else {
+            this.getRatedMovies();
+        }
     }
 
     getRatedMovies = () => {
@@ -97,7 +111,8 @@ export default class TabsView extends Component {
             const newArr = [movie, ...this.state.ratedMovies.results];
             this.setState({
                 ratedMovies: {...this.state.ratedMovies, results: newArr},
-                ratingList: {...this.state.ratingList, [movie.id]: value}
+                ratingList: {...this.state.ratingList, [movie.id]: value},
+                error: null
             });
         } else {
             this.setState({

@@ -19,18 +19,6 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        if (!JSON.parse(localStorage.getItem('guest_session_id'))) {
-            this.tmdbService
-                .newGuestSession()
-                .then((id) => {
-                    localStorage.setItem('guest_session_id', JSON.stringify(id));
-                })
-                .catch((error) => {
-                    this.setState({
-                        isError: <Alert type="error" message={error.name} description={error.message} />
-                    })
-                });
-        }
         this.getGenres();
     }
 

@@ -18,7 +18,7 @@ const MovieList = ({movies, onChangePage}) => {
             }}
             dataSource={results}
             renderItem={(item) => (
-                <List.Item>
+                <List.Item key={item.id}>
                     <MovieCard movie={item} />
                 </List.Item>
             )}
