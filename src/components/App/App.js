@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { Online, Offline } from "react-detect-offline";
 
 import TMDBservice from "../../services/TMDBservice";
-import MyContext from "../MyContext/MyContext";
+import MyContext from "../Contexts/MyContext";
 import TabsView from "../TabsView/TabsView";
 import './App.css';
 

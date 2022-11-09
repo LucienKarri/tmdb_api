@@ -2,7 +2,7 @@ import { List } from "antd";
 import React from "react";
 import MovieCard from "../MovieCard/MovieCard";
 
-const MovieList = ({movies, onChangePage, list, changeRating}) => {
+const MovieList = ({movies, onChangePage}) => {
     const {results, total_pages, page} = movies;
 
     return (
@@ -10,7 +10,7 @@ const MovieList = ({movies, onChangePage, list, changeRating}) => {
             dataSource={results}
             renderItem={(item) => (
                 <List.Item>
-                    <MovieCard movie={item} changeRating={changeRating} rating={list[item.id] || 0}/>
+                    <MovieCard movie={item} />
                 </List.Item>
             )}
             pagination={{

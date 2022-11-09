@@ -76,11 +76,10 @@ export default class SearchTab extends Component {
 
     render() {
         const {movieList, error, loading} = this.state;
-        const {list, changeRating} = this.props;
 
         const hasData = !(loading || error);
         const spinner = loading ? <Spin /> : null;
-        const content = hasData ? <MovieList movies={movieList} onChangePage={this.onChangePage} list={list} changeRating={changeRating} /> : null;
+        const content = hasData ? <MovieList movies={movieList} onChangePage={this.onChangePage} /> : null;
 
         return (
             <>

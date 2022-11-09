@@ -3,6 +3,7 @@ import TMDBservice from "../../services/TMDBservice";
 import { Alert, Tabs, Spin } from "antd";
 import SearchTab from "../SearchTab/SearchTab";
 import MovieList from "../MovieList/MovieList";
+import RatingContext from "../Contexts/RatingContext";
 
 export default class TabsView extends Component {
     tmdbService = new TMDBservice();
@@ -17,40 +18,6 @@ export default class TabsView extends Component {
     componentDidMount() {
         this.getRatedMovies();
     }
-
-/*
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.page !== this.state.page) {
-            this.setState({
-                loading:true,
-                error: null
-            });
-            this.getRatedMovies();
-        }
-    }
-
-    getRatedMovies = () => {
-        this.tmdbService
-            .getRatedMovies(this.state.page)
-            .then((ratedMovies) => {
-                if (ratedMovies.total_results === 0) {
-                    this.setState({
-                        error: <Alert type="info" message="You haven't rated any movies yet" />
-                    })
-                }
-                this.setState({
-                    ratedMovies,
-                    loading: false
-                })
-            })
-            .catch((error) => {
-                this.setState({
-                    error: <Alert type="error" message={error.name} description={`${error.message}. The service may not be available in your country.`} />,
-                    loading: false
-                })
-            })
-    }
-*/
 
     getRatedMovies = () => {
         this.tmdbService
@@ -109,7 +76,7 @@ export default class TabsView extends Component {
         const res = ratedMovies.results.reduce((total, elem) => {
             total[elem.id] = elem.rating;
             return total;
-        }, {})
+        }, {});
         this.setState({
             ratingList: res
         });
@@ -118,17 +85,24 @@ export default class TabsView extends Component {
     onChangePage = (page) => {
         this.setState({
             ratedMovies: {...this.state.ratedMovies, page}
-        })
+        });
     }
 
     onChangeRating = (movie, value) => {
+        this.tmdbService
+            .postRating(movie.id, value)
+            .catch((error) => console.log(error));
         if (!this.state.ratingList[movie.id]) {
-            this.state.ratedMovies.results.unshift(movie)
-            console.log('new element', this.state.ratedMovies.results)
+            const newArr = [movie, ...this.state.ratedMovies.results];
+            this.setState({
+                ratedMovies: {...this.state.ratedMovies, results: newArr},
+                ratingList: {...this.state.ratingList, [movie.id]: value}
+            });
+        } else {
+            this.setState({
+                ratingList: {...this.state.ratingList, [movie.id]: value}
+            });
         }
-        this.setState({
-            ratingList: {...this.state.ratingList, [movie.id]: value}
-        })
     }
 
     render() {
@@ -136,13 +110,13 @@ export default class TabsView extends Component {
 
         const hasData = !(loading || error);
         const spinner = loading ? <Spin /> : null;
-        const content = hasData ? <MovieList movies={ratedMovies} onChangePage={this.onChangePage} list={ratingList} changeRating={this.onChangeRating}/> : null;
+        const content = hasData ? <MovieList movies={ratedMovies} onChangePage={this.onChangePage} /> : null;
 
         const items = [
             {
                 label: 'Search',
                 key: '1',
-                children: <SearchTab list={ratingList} changeRating={this.onChangeRating} />
+                children: <SearchTab />
             },
             {
                 label: 'Rated',
@@ -152,11 +126,18 @@ export default class TabsView extends Component {
         ];
     
         return (
-            <Tabs
-                defaultActiveKey="1"
-                items={items}
-                centered
-            />
+            <RatingContext.Provider
+                value={{
+                    ratingList,
+                    onChangeRating: this.onChangeRating
+                }}
+            >
+                <Tabs
+                    defaultActiveKey="1"
+                    items={items}
+                    centered
+                />
+            </RatingContext.Provider>
         );
     }
 }
