@@ -93,6 +93,9 @@ export default class MovieCard extends Component {
           className="card__genres"
           grid={{}}
           dataSource={genre_ids}
+          locale={{
+            emptyText: 'No information about genres',
+          }}
           renderItem={(item) => (
             <MyContext.Consumer>
               {(genres) => (
