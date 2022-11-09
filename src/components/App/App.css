@@ -1,1 +1,18 @@
 @import '~antd/dist/antd.css';
+
+* {
+    box-sizing: border-box;
+}
+.wrapper {
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 8px 16px 16px 16px;
+    background: white;
+}
+
+@media (min-width: 1200px) {
+    .wrapper {
+        padding: 16px 32px 32px 32px;
+    }
+}

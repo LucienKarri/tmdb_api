@@ -1,4 +1,4 @@
-import { Alert, Input } from "antd";
+import { Alert, Col, Input, Row } from "antd";
 import React, { Component } from "react";
 import TMDBservice from "../../services/TMDBservice";
 import debounce from "lodash.debounce";
@@ -83,15 +83,19 @@ export default class SearchTab extends Component {
         const content = hasData ? <MovieList movies={movieList} onChangePage={this.onChangePage} /> : null;
 
         return (
-            <>
-                <Input
-                    placeholder="Type to search..."
-                    onChange={debounce(this.onChangeRequest, 1000)}
-                />
-                {spinner}
-                {error}
-                {content}
-            </>
+            <Row gutter={[0, 16]}>
+                <Col span={24}>
+                    <Input
+                        placeholder="Type to search..."
+                        onChange={debounce(this.onChangeRequest, 1000)}
+                    />
+                </Col>
+                <Col span={24}>
+                    {spinner}
+                    {error}
+                    {content}
+                </Col>
+            </Row>
         );
     }
 }

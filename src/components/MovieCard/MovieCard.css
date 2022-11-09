@@ -1,0 +1,151 @@
+.card {}
+
+.card .ant-card-body {
+    padding: 0;
+    display: grid;
+    grid-template-areas:    'img        title       rating'
+                            'img        date        date'
+                            'img        genres      genres'
+                            'overview   overview    overview'
+                            'stars      stars       stars';
+    grid-template-columns: 97px auto 48px;
+}
+
+.card .ant-card-body::before, .card .ant-card-body::after {
+    display: none;
+}
+
+.card__image {
+    grid-area: img;
+}
+
+.card__image img{
+    aspect-ratio: 2/3;
+}
+
+h4.ant-typography.card__title {
+    height: min-content;
+    grid-area: title;
+    margin: 8px 0 0 8px;
+}
+
+.card__progress.ant-progress {
+    height: min-content;
+    grid-area: rating;
+    margin: 8px 8px 0 0;
+}
+
+.card__date.ant-typography {
+    height: min-content;
+    grid-area: date;
+    margin: 0 8px;
+}
+
+.card__genres.ant-list {
+    height: min-content;
+    grid-area: genres;
+    margin: 0 8px;
+}
+
+.card__genres.ant-list-grid .ant-col > .ant-list-item {
+    margin-bottom: 8px;
+}
+
+.card__genres.ant-list-grid .ant-row > div:last-child .ant-col > .ant-list-item{
+    margin-bottom: 0;
+}
+
+.card__overview.ant-typography {
+    height: min-content;
+    grid-area: overview;
+    margin: 0 8px;
+}
+
+.card__rate.ant-rate {
+    height: auto;
+    grid-area: stars;
+    align-self: end;
+    text-align: right;
+    margin: auto 8px 8px 8px;
+    font-size: 19px;
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .card .ant-card-body {
+        grid-template-areas:    'img        title       rating'
+                                'img        date        date'
+                                'img        genres      genres'
+                                'img        overview    overview'
+                                'img        stars       stars';
+        grid-template-columns: 40% auto 56px;
+    }
+
+    h4.ant-typography.card__title {
+        margin: 16px 0 0 16px;
+    }
+    
+    .card__progress.ant-progress {
+        margin: 16px 16px 0 0;
+    }
+    
+    .card__date.ant-typography {
+        margin: 0 16px;
+    }
+    
+    .card__genres.ant-list {
+        margin: 0 16px;
+    }
+    
+    .card__overview.ant-typography {
+        margin: 0 16px;
+    }
+    
+    .card__rate.ant-rate {
+        text-align: left;
+        margin: auto 16px 16px 16px;
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .card .ant-card-body {
+        grid-template-areas:    'img        title       rating'
+                                'img        date        date'
+                                'img        genres      genres'
+                                'img        overview    overview'
+                                'img        stars       stars';
+        grid-template-columns: 40% auto 56px;
+    }
+
+    h4.ant-typography.card__title {
+        margin: 16px 0 0 16px;
+    }
+    
+    .card__progress.ant-progress {
+        margin: 16px 16px 0 0;
+    }
+    
+    .card__date.ant-typography {
+        margin: 0 16px;
+    }
+    
+    .card__genres.ant-list {
+        margin: 0 16px;
+    }
+    
+    .card__overview.ant-typography {
+        margin: 0 16px;
+    }
+    
+    .card__rate.ant-rate {
+        text-align: left;
+        margin: auto 16px 16px 16px;
+        font-size: 17px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .card__rate.ant-rate {
+        font-size: 20px;
+    }
+}

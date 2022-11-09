@@ -3,6 +3,8 @@ import { format } from "date-fns";
 import MyContext from "../Contexts/MyContext";
 import RatingContext from "../Contexts/RatingContext";
 import React from "react";
+import noPoster from './no-poster.svg';
+import './MovieCard.css';
 
 const {Title, Text, Paragraph} = Typography;
 
@@ -30,19 +32,21 @@ const MovieCard = ({movie}) => {
     }
 
     return (
-        <Card>
-            <Image src={`https://image.tmdb.org/t/p/original${poster_path}`} preview={false} />
-            <Title level={4} ellipsis={{rows: 2}}>{title}</Title>
+        <Card className="card">
+            <Image src={`https://image.tmdb.org/t/p/original${poster_path}`} preview={false} fallback={noPoster} rootClassName="card__image" />
+            <Title level={4} ellipsis={{rows: 2}} className='card__title'>{title}</Title>
             <Progress
                 type="circle"
                 format={() => vote_average.toFixed(1)}
                 width={40}
                 trailColor={setColor(vote_average)}
+                className="card__progress"
             />
-            <Text>
-                {format(new Date(release_date), 'MMMM d, y')}
+            <Text className="card__date">
+                {format(new Date(release_date), 'LLLL d, y')}
             </Text>
             <List
+                className="card__genres"
                 grid={{}}
                 dataSource={genre_ids}
                 renderItem={(item) => (
@@ -55,17 +59,15 @@ const MovieCard = ({movie}) => {
                     </MyContext.Consumer>
                 )}
             />
-            <Paragraph ellipsis={{rows: 3}}>
+            <Paragraph ellipsis={{rows: 3}} className="card__overview">
                 {overview}
             </Paragraph>
             <RatingContext.Consumer>
                 {({ratingList, onChangeRating}) => (
                     <Rate
+                        className="card__rate"
                         count={10}
                         allowHalf
-                        style={{
-                            fontSize: 20
-                        }}
                         onChange={(value) => onChangeRating(movie, value)}
                         value={ratingList[id] || 0}
                     />
@@ -76,4 +78,3 @@ const MovieCard = ({movie}) => {
 }
 
 export default MovieCard;
-

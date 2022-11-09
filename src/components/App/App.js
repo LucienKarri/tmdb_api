@@ -53,12 +53,10 @@ export default class App extends Component {
     }
 
     transformGenres = (genres) => {
-        const res = genres.genres.reduce((total, {id, name}) => {
+        return genres.genres.reduce((total, {id, name}) => {
             total[id] = name;
             return total;
-        }, {})
-
-        return res;
+        }, {});
     }
 
     render() {
@@ -71,21 +69,22 @@ export default class App extends Component {
         return (
             <Layout>
                 <Content>
-                    <Offline>
-                        <Alert
-                            message="Error"
-                            description="No internet connection"
-                            type="error"
-                            showIcon
-                        />
-                    </Offline>
-                    <Online>
-                        {spinner}
-                        {error}
-                        <MyContext.Provider value={genres}>
-                            {content}
-                        </MyContext.Provider>
-                    </Online>
+                    <div className="wrapper">
+                        <Offline>
+                            <Alert
+                                message="Error"
+                                description="No internet connection"
+                                type="error"
+                            />
+                        </Offline>
+                        <Online>
+                            {spinner}
+                            {error}
+                            <MyContext.Provider value={genres}>
+                                {content}
+                            </MyContext.Provider>
+                        </Online>
+                    </div>
                 </Content>
             </Layout>
         );

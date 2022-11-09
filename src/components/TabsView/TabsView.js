@@ -137,6 +137,7 @@ export default class TabsView extends Component {
                     defaultActiveKey="1"
                     items={items}
                     centered
+                    tabBarStyle={{marginLeft: 'auto', marginRight: 'auto'}}
                 />
             </RatingContext.Provider>
         );
