@@ -1,6 +1,7 @@
 class TMDBservice {
     token = '5d90c2f6fa0965b9b96b0b00866234d9';
     baseURL = 'https://api.themoviedb.org/3';
+    imageURL = 'https://image.tmdb.org/t/p/original';
 
     async fetchURL(url) {
         const res = await fetch(url);
@@ -46,6 +47,16 @@ class TMDBservice {
         }
 
         return await fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(body)})
+    }
+
+    async getPoster(path) {
+        const url = `${this.imageURL}${path}`;
+
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`Could not fetch, received ${res.status}`);
+        }
+        return await res.blob();
     }
 }
 

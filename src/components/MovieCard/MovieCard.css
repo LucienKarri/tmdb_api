@@ -15,6 +15,7 @@
 
 .card__image {
     grid-area: img;
+    align-self: center;
 }
 
 .card__image img{
