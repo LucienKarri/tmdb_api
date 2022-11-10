@@ -3,23 +3,19 @@ import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
 
 import TMDBservice from '../../services/TMDBservice';
-import MovieList from '../MovieList/MovieList';
-import Spinner from '../Spinner/Spinner';
+import MovieList from '../MovieList';
+import Spinner from '../Spinner';
 
 export default class SearchTab extends Component {
   tmdbService = new TMDBservice();
 
   state = {
-    request: 'return',
+    request: '',
     page: 1,
     movieList: null,
-    error: null,
-    loading: true,
+    error: <Alert type="info" message="please enter movie name" />,
+    loading: false,
   };
-
-  componentDidMount() {
-    this.getMovies();
-  }
 
   componentDidUpdate(prevProps, prevState) {
     const { request, page } = this.state;

@@ -1,7 +1,7 @@
 import { List } from 'antd';
 import React from 'react';
 
-import MovieCard from '../MovieCard/MovieCard';
+import MovieCard from '../MovieCard';
 
 const MovieList = ({ movies, onChangePage }) => {
   const { results, total_pages, page } = movies;

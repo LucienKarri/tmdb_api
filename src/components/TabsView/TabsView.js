@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Tabs } from 'antd';
 
 import TMDBservice from '../../services/TMDBservice';
-import RatingContext from '../Contexts/RatingContext';
+import RatingContext from '../../contexts/RatingContext';
 import SearchTab from '../SearchTab';
 import MovieList from '../MovieList';
 import Spinner from '../Spinner';
@@ -18,6 +18,10 @@ export default class TabsView extends Component {
   };
 
   componentDidMount() {
+    this.initGuestData();
+  }
+
+  initGuestData = () => {
     if (!JSON.parse(localStorage.getItem('guest_session_id'))) {
       this.tmdbService
         .newGuestSession()
@@ -33,7 +37,7 @@ export default class TabsView extends Component {
     } else {
       this.getRatedMovies();
     }
-  }
+  };
 
   getRatedMovies = () => {
     this.tmdbService

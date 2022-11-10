@@ -2,8 +2,8 @@ import { Card, Image, Typography, Progress, List, Tag, Rate } from 'antd';
 import { format } from 'date-fns';
 import React, { Component } from 'react';
 
-import MyContext from '../Contexts/MyContext';
-import RatingContext from '../Contexts/RatingContext';
+import MyContext from '../../contexts/MyContext';
+import RatingContext from '../../contexts/RatingContext';
 import TMDBservice from '../../services/TMDBservice';
 import Spinner from '../Spinner/Spinner';
 
