@@ -1,13 +1,14 @@
-import { Card, Image, Typography, Progress, List, Tag, Rate } from 'antd';
+import { Card, Image, Typography, Progress } from 'antd';
 import { format } from 'date-fns';
 import React, { Component } from 'react';
 
-import MyContext from '../../contexts/MyContext';
-import RatingContext from '../../contexts/RatingContext';
 import TMDBservice from '../../services/TMDBservice';
-import Spinner from '../Spinner/Spinner';
+import Rating from '../Rating';
+import Genres from '../Genres';
+import Spinner from '../Spinner';
 
 import noPoster from './no-poster.svg';
+
 import './MovieCard.css';
 
 const { Title, Text, Paragraph } = Typography;
@@ -64,7 +65,7 @@ export default class MovieCard extends Component {
   render() {
     const { poster, loading } = this.state;
     const { movie } = this.props;
-    const { title, vote_average, release_date, genre_ids, overview, id } = movie;
+    const { title, vote_average, release_date, genre_ids, overview } = movie;
 
     const date = release_date ? format(new Date(release_date), 'LLLL d, y') : 'release date unknown';
     const spinner = (
@@ -89,37 +90,11 @@ export default class MovieCard extends Component {
           className="card__progress"
         />
         <Text className="card__date">{date}</Text>
-        <List
-          className="card__genres"
-          grid={{}}
-          dataSource={genre_ids}
-          locale={{
-            emptyText: 'No information about genres',
-          }}
-          renderItem={(item) => (
-            <MyContext.Consumer>
-              {(genres) => (
-                <List.Item key={item}>
-                  <Tag>{genres[item]}</Tag>
-                </List.Item>
-              )}
-            </MyContext.Consumer>
-          )}
-        />
+        <Genres genre_ids={genre_ids} />
         <Paragraph ellipsis={{ rows: 3 }} className="card__overview">
           {overview}
         </Paragraph>
-        <RatingContext.Consumer>
-          {({ ratingList, onChangeRating }) => (
-            <Rate
-              className="card__rate"
-              count={10}
-              allowHalf
-              onChange={(value) => onChangeRating(movie, value)}
-              value={ratingList[id] || 0}
-            />
-          )}
-        </RatingContext.Consumer>
+        <Rating movie={movie} />
       </Card>
     );
   }
